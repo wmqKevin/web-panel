@@ -1,1 +1,9 @@
-// Panel components will be exported here
+export { default as UILoadPanel } from './UILoadPanel';
+export { default as UITipPanel } from './UITipPanel';
+export { default as UINoviceTutorialPanel } from './UINoviceTutorialPanel';
+export { default as UIRecordPanel } from './UIRecordPanel';
+export { default as LoadScenePanel } from './LoadScenePanel';
+export { default as UISelectPanel } from './UISelectPanel';
+export { default as UIFunctionPanel } from './UIFunctionPanel';
+export { default as UISubtitlePanel } from './UISubtitlePanel';
+export { default as UIProtectiveClothingPanel } from './UIProtectiveClothingPanel';
