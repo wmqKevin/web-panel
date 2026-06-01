@@ -1,0 +1,97 @@
+/* UITopOptTip styles */
+.toptip-root {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10000;
+}
+
+.toptip-container {
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+/* Ring button */
+.toptip-ring-btn {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, #2d2d5e, #1a1a3e);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  font-family: 'Microsoft YaHei', sans-serif;
+}
+
+.toptip-ring-btn:hover {
+  border-color: #4f8cff;
+  transform: translate(-50%, -50%) scale(1.12);
+  box-shadow: 0 6px 24px rgba(79, 140, 255, 0.4);
+}
+
+.toptip-ring-btn:active {
+  transform: translate(-50%, -50%) scale(0.95);
+}
+
+.toptip-ring-btn.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.toptip-btn-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.toptip-btn-label {
+  font-size: 9px;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+/* Center indicator */
+.toptip-center {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(79, 140, 255, 0.5);
+  border: 2px solid rgba(79, 140, 255, 0.8);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Connecting lines (decorative) */
+.toptip-line {
+  position: absolute;
+  background: rgba(79, 140, 255, 0.2);
+  transform-origin: 0 50%;
+  height: 1px;
+  pointer-events: none;
+}
+
+/* Animations */
+.toptip-enter .toptip-ring-btn {
+  animation: toptip-pop-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes toptip-pop-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}

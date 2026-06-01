@@ -7,3 +7,8 @@ export { default as UISelectPanel } from './UISelectPanel';
 export { default as UIFunctionPanel } from './UIFunctionPanel';
 export { default as UISubtitlePanel } from './UISubtitlePanel';
 export { default as UIProtectiveClothingPanel } from './UIProtectiveClothingPanel';
+export { default as TaskMenu } from './TaskMenu';
+export { default as UIHistoryTakingPanel } from './UIHistoryTakingPanel';
+export { default as UIDisinfectPanel } from './UIDisinfectPanel';
+export { default as UIComprehensivePerformanceRecordPanel } from './UIComprehensivePerformanceRecordPanel';
+export { default as UITopOptTip } from './UITopOptTip';
