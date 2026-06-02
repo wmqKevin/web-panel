@@ -12,3 +12,6 @@ export { default as UIHistoryTakingPanel } from './UIHistoryTakingPanel';
 export { default as UIDisinfectPanel } from './UIDisinfectPanel';
 export { default as UIComprehensivePerformanceRecordPanel } from './UIComprehensivePerformanceRecordPanel';
 export { default as UITopOptTip } from './UITopOptTip';
+export { SettingsPanel } from './SettingsPanel';
+export { LogPanel } from './LogPanel';
+export { StatsPanel } from './StatsPanel';
