@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { PanelProps } from '../types';
-import { usePanelLifecycle } from '../core/usePanelLifecycle';
+import { PanelProps } from '../types/panel';
+import { usePanel } from '../hooks/usePanelLifecycle';
 
 export enum TutorialMode {
   Practice = 'Practice',
@@ -14,11 +14,14 @@ interface NoviceTutorialData {
   onBack?: () => void;
 }
 
-export default function UINoviceTutorialPanel({ data, visible, close }: PanelProps) {
+export default function UINoviceTutorialPanel({ data, visible, onClose }: PanelProps) {
   const panelData = (data ?? {}) as NoviceTutorialData;
   const [mode, setMode] = useState<TutorialMode>(panelData.defaultMode ?? TutorialMode.Practice);
 
-  usePanelLifecycle({}, data, visible);
+  usePanel({
+    visible,
+    data,
+  });
 
   const handlePractice = () => {
     setMode(TutorialMode.Practice);
@@ -32,7 +35,7 @@ export default function UINoviceTutorialPanel({ data, visible, close }: PanelPro
 
   const handleBack = () => {
     panelData.onBack?.();
-    close();
+    onClose();
   };
 
   return (
@@ -137,7 +140,7 @@ export default function UINoviceTutorialPanel({ data, visible, close }: PanelPro
               } else {
                 panelData.onExam?.();
               }
-              close();
+              onClose();
             }}
           >
             开始{mode === TutorialMode.Practice ? '练习' : '考核'}

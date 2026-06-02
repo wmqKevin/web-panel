@@ -5,8 +5,8 @@
 
 import React, { useMemo } from 'react';
 import ReactECharts from 'echarts-for-react';
-import type { PanelProps } from '../../types';
-import { usePanelLifecycle } from '../../core/usePanelLifecycle';
+import type { PanelProps } from '../../types/panel';
+import { usePanelLifecycle } from '../../hooks/usePanelLifecycle';
 import type { PerformanceData, ScoreDimension } from '../../data/performanceData';
 import { samplePerformanceData } from '../../data/performanceData';
 import './UIComprehensivePerformanceRecordPanel.css';
@@ -41,7 +41,7 @@ function getScoreColor(score: number): string {
   return '#f44336';
 }
 
-const UIComprehensivePerformanceRecordPanel: React.FC<PanelProps> = ({ data, close }) => {
+const UIComprehensivePerformanceRecordPanel: React.FC<PanelProps> = ({ data, onClose }) => {
   const panelData = (data as unknown as PerformanceData) ?? samplePerformanceData;
   const dimensions = panelData.dimensions ?? samplePerformanceData.dimensions;
   const gradeLevels = panelData.gradeLevels ?? samplePerformanceData.gradeLevels;
@@ -135,7 +135,7 @@ const UIComprehensivePerformanceRecordPanel: React.FC<PanelProps> = ({ data, clo
   };
 
   return (
-    <div className="perf-root" onClick={(e) => e.target === e.currentTarget && close()}>
+    <div className="perf-root" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className="perf-panel">
         {/* Header */}
         <div className="perf-header">

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { PanelProps } from '../types';
-import { usePanelLifecycle } from '../core/usePanelLifecycle';
+import { PanelProps } from '../types/panel';
+import { usePanel } from '../hooks/usePanelLifecycle';
 
 export enum TipMode {
   Custom = 'Custom',
@@ -26,7 +26,7 @@ const modeConfig: Record<TipMode, { title: string; color: string; icon: string }
   [TipMode.Custom]: { title: '提示', color: '#4f8cff', icon: '!' },
 };
 
-export default function UITipPanel({ data, visible, close }: PanelProps) {
+export default function UITipPanel({ data, visible, onClose }: PanelProps) {
   const panelData = (data ?? {}) as TipPanelData;
   const [confirming, setConfirming] = useState(false);
 
@@ -37,18 +37,21 @@ export default function UITipPanel({ data, visible, close }: PanelProps) {
   const confirmText = panelData.confirmText ?? '确定';
   const cancelText = panelData.cancelText ?? '取消';
 
-  usePanelLifecycle({}, data, visible);
+  usePanel({
+    visible,
+    data,
+  });
 
   const handleConfirm = () => {
     if (confirming) return;
     setConfirming(true);
     panelData.onConfirm?.();
-    close();
+    onClose();
   };
 
   const handleCancel = () => {
     panelData.onCancel?.();
-    close();
+    onClose();
   };
 
   return (

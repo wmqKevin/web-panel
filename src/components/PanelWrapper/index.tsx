@@ -75,6 +75,7 @@ export function PanelWrapper({ instance, manager }: PanelWrapperProps) {
     } else {
       mountedRef.current = true;
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // 只在挂载时执行
 
   // 关闭动画

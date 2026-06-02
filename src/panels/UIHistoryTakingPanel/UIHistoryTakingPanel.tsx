@@ -4,13 +4,13 @@
  */
 
 import React, { useState, useCallback, useRef } from 'react';
-import type { PanelProps } from '../../types';
-import { usePanelLifecycle } from '../../core/usePanelLifecycle';
+import type { PanelProps } from '../../types/panel';
+import { usePanelLifecycle } from '../../hooks/usePanelLifecycle';
 import type { HistoryTakingData } from '../../data/historyData';
 import { sampleHistoryData } from '../../data/historyData';
 import './UIHistoryTakingPanel.css';
 
-const UIHistoryTakingPanel: React.FC<PanelProps> = ({ data, close }) => {
+const UIHistoryTakingPanel: React.FC<PanelProps> = ({ data, onClose }) => {
   const panelData = (data as unknown as HistoryTakingData) ?? sampleHistoryData;
   const categories = panelData.categories ?? sampleHistoryData.categories;
   const items = panelData.items ?? sampleHistoryData.items;
@@ -91,7 +91,7 @@ const UIHistoryTakingPanel: React.FC<PanelProps> = ({ data, close }) => {
   }, [isListening]);
 
   return (
-    <div className="history-root" onClick={(e) => e.target === e.currentTarget && close()}>
+    <div className="history-root" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className="history-panel">
         {/* Header */}
         <div className="history-header">

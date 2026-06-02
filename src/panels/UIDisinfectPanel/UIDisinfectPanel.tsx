@@ -4,13 +4,13 @@
  */
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import type { PanelProps } from '../../types';
-import { usePanelLifecycle } from '../../core/usePanelLifecycle';
+import type { PanelProps } from '../../types/panel';
+import { usePanelLifecycle } from '../../hooks/usePanelLifecycle';
 import type { DisinfectConfig } from '../../data/disinfectData';
 import { defaultDisinfectConfig } from '../../data/disinfectData';
 import './UIDisinfectPanel.css';
 
-const UIDisinfectPanel: React.FC<PanelProps> = ({ data, close }) => {
+const UIDisinfectPanel: React.FC<PanelProps> = ({ data, onClose }) => {
   const config = (data?.config as DisinfectConfig) ?? defaultDisinfectConfig;
   const width = config.width ?? 600;
   const height = config.height ?? 400;
@@ -230,7 +230,7 @@ const UIDisinfectPanel: React.FC<PanelProps> = ({ data, close }) => {
   }, [initCanvas]);
 
   return (
-    <div className="disinfect-root" onClick={(e) => e.target === e.currentTarget && close()}>
+    <div className="disinfect-root" onClick={(e) => e.target === e.currentTarget && onClose()}>
       {/* Custom cursor */}
       <div
         ref={cursorRef}

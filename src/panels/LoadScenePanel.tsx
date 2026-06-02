@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
-import { PanelProps } from '../types';
-import { usePanelLifecycle } from '../core/usePanelLifecycle';
+import { useState, useRef, useCallback } from 'react';
+import { PanelProps } from '../types/panel';
+import { usePanel } from '../hooks/usePanelLifecycle';
 
 interface LoadSceneData {
   sceneName?: string;
@@ -10,7 +10,14 @@ interface LoadSceneData {
   loadTask?: () => Promise<void>;
 }
 
-export default function LoadScenePanel({ data, visible, close }: PanelProps) {
+const tips = [
+  '正在加载资源...',
+  '正在初始化场景...',
+  '正在准备数据...',
+  '即将完成...',
+];
+
+export default function LoadScenePanel({ data, visible, onClose }: PanelProps) {
   const panelData = (data ?? {}) as LoadSceneData;
   const [progress, setProgress] = useState(0);
   const [tip, setTip] = useState('');
@@ -21,13 +28,6 @@ export default function LoadScenePanel({ data, visible, close }: PanelProps) {
 
   const sceneName = panelData.sceneName ?? '场景';
   const minDisplayTime = panelData.minDisplayTime ?? 1500;
-
-  const tips = [
-    '正在加载资源...',
-    '正在初始化场景...',
-    '正在准备数据...',
-    '即将完成...',
-  ];
 
   const simulateLoad = useCallback(async () => {
     completedRef.current = false;
@@ -87,12 +87,13 @@ export default function LoadScenePanel({ data, visible, close }: PanelProps) {
     panelData.onProgress?.(1);
     panelData.onComplete?.();
 
-    setTimeout(() => close(), 300);
-  }, [panelData, minDisplayTime, close]);
+    setTimeout(() => onClose(), 300);
+  }, [panelData, minDisplayTime, close, tips]);
 
-  usePanelLifecycle(
-    {
-      onShow: () => {
+  usePanel({
+    visible,
+    data,
+    onShow: () => {
         simulateLoad();
       },
       onHide: () => {
@@ -105,10 +106,7 @@ export default function LoadScenePanel({ data, visible, close }: PanelProps) {
           cancelAnimationFrame(rafRef.current);
         }
       },
-    },
-    data,
-    visible
-  );
+  });
 
   return (
     <div className="panel-root" style={{ background: '#0a0a1a' }}>
