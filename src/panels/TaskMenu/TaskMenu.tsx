@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import type { PanelProps } from '../../types';
-import { usePanelLifecycle } from '../../core/usePanelLifecycle';
+import type { PanelProps } from '../../types/panel';
+import { usePanelLifecycle } from '../../hooks/usePanelLifecycle';
 import type { TaskItem, TaskMenuData } from '../../data/taskMenuData';
 import { sampleTaskMenuData } from '../../data/taskMenuData';
 import './TaskMenu.css';
@@ -11,7 +11,7 @@ const StatusIcon: Record<string, string> = {
   incomplete: '○',
 };
 
-const TaskMenuPanel: React.FC<PanelProps> = ({ data, close }) => {
+const TaskMenuPanel: React.FC<PanelProps> = ({ data, onClose }) => {
   const panelData = (data as unknown as TaskMenuData) ?? sampleTaskMenuData;
   const [mode, setMode] = useState<'dot' | 'panel'>(panelData.mode ?? 'panel');
   const [tasks, setTasks] = useState<TaskItem[]>(panelData.tasks ?? sampleTaskMenuData.tasks);
@@ -163,7 +163,7 @@ const TaskMenuPanel: React.FC<PanelProps> = ({ data, close }) => {
   );
 
   return (
-    <div className="taskmenu-root" onClick={(e) => e.target === e.currentTarget && close()}>
+    <div className="taskmenu-root" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className="taskmenu-panel">
         <div className="taskmenu-header">
           <h2>📋 任务菜单</h2>

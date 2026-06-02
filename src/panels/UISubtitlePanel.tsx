@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useMemo } from 'react';
 import { PanelManager } from '../core/PanelManager';
 import { usePanelLifecycle } from '../hooks/usePanelLifecycle';
 import type { PanelProps, IUIData } from '../types/panel';
@@ -17,7 +17,7 @@ interface SubtitleData extends IUIData {
 
 export default function UISubtitlePanel({ data }: PanelProps) {
   const subtitleData = data as SubtitleData | undefined;
-  const dialogues = subtitleData?.dialogues ?? [];
+  const dialogues = useMemo(() => subtitleData?.dialogues ?? [], [subtitleData]);
   const typingSpeed = subtitleData?.typingSpeed ?? 50;
 
   const [currentIndex, setCurrentIndex] = useState(0);

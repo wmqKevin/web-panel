@@ -21,7 +21,7 @@ import {
   PanelManagerEventListener,
   IUIData,
 } from '../types/panel';
-import { PanelRegistry } from './PanelRegistry';
+import { PanelRegistry, getGlobalRegistry } from './PanelRegistry';
 
 /**
  * 生成唯一实例 ID
@@ -399,4 +399,33 @@ export class PanelManager {
   getRegistry(): PanelRegistry {
     return this.registry;
   }
+
+  // ==========================================================================
+  // 静态代理方法（使用默认单例实例）
+  // ==========================================================================
+
+  static openPanel(name: string, options?: PanelOptions): string {
+    return defaultInstance.openPanel(name, options);
+  }
+
+  static closePanel(name: string): void {
+    defaultInstance.closePanel(name);
+  }
+
+  static closeAll(): void {
+    defaultInstance.closeAll();
+  }
+
+  static getPanel<T extends IUIData = IUIData>(name: string): (PanelInstance & { data: T }) | null {
+    return defaultInstance.getPanel<T>(name);
+  }
+
+  static isPanelOpen(name: string): boolean {
+    return defaultInstance.isPanelOpen(name);
+  }
 }
+
+// 默认单例实例
+const defaultInstance = new PanelManager(getGlobalRegistry());
+
+export const panelManager = defaultInstance;

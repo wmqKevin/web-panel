@@ -4,9 +4,9 @@
  */
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import type { PanelProps, IFollowTarget } from '../../types';
-import { MockFollowTarget } from '../../types';
-import { usePanelLifecycle } from '../../core/usePanelLifecycle';
+import type { PanelProps, IFollowTarget } from '../../types/panel';
+import { MockFollowTarget } from '../../types/panel';
+import { usePanelLifecycle } from '../../hooks/usePanelLifecycle';
 import type { TopOptTipData, RingButtonConfig } from '../../data/topOptTipData';
 import { sampleTopOptTipData } from '../../data/topOptTipData';
 import './UITopOptTip.css';

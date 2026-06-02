@@ -1,5 +1,5 @@
-import { PanelProps, IUIData } from '../types';
-import { usePanelLifecycle } from '../core/usePanelLifecycle';
+import { PanelProps, IUIData } from '../types/panel';
+import { usePanel } from '../hooks/usePanelLifecycle';
 
 /** Extensible data interface for UIRecordPanel */
 export interface RecordPanelData extends IUIData {
@@ -17,13 +17,14 @@ export interface RecordPanelData extends IUIData {
  * - Pagination
  * - Export functionality
  */
-export default function UIRecordPanel({ data, visible, close }: PanelProps) {
+export default function UIRecordPanel({ data, visible, onClose: _onClose }: PanelProps) {
   const panelData = (data ?? {}) as RecordPanelData;
   const title = panelData.title ?? '操作记录';
 
-  usePanelLifecycle(
-    {
-      onInit: () => {
+  usePanel({
+    visible,
+    data,
+    onInit: () => {
         // Extension hook: initialize record data source
       },
       onShow: () => {
@@ -36,10 +37,7 @@ export default function UIRecordPanel({ data, visible, close }: PanelProps) {
       onDestroy: () => {
         // Extension hook: release resources
       },
-    },
-    data,
-    visible
-  );
+  });
 
   return (
     <div className="panel-root" style={{ background: 'rgba(0,0,0,0.5)' }}>

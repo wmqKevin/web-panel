@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { PanelManager } from '../core/PanelManager';
 import { usePanelLifecycle } from '../hooks/usePanelLifecycle';
-import type { PanelProps } from '../types/panel';
+import { PanelProps, UILevel } from '../types/panel';
 
 const CASES = [
   { id: 1, name: '案例一：普通病房护理', color: '#4a90d9' },
@@ -39,7 +39,7 @@ export default function UISelectPanel(_props: PanelProps) {
           setLoadingCaseId(null);
           setProgress(0);
           // 加载完成后打开相关面板
-          PanelManager.openPanel('UIFunctionPanel', { level: 100 });
+          PanelManager.openPanel('UIFunctionPanel', { level: UILevel.AlwayTop });
           PanelManager.openPanel('UISubtitlePanel', {
             data: {
               dialogues: [

@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from 'react';
-import { PanelProps } from '../types';
-import { usePanelLifecycle } from '../core/usePanelLifecycle';
+import { useState, useRef } from 'react';
+import { PanelProps } from '../types/panel';
+import { usePanel } from '../hooks/usePanelLifecycle';
 import { panelManager } from '../core/PanelManager';
 
 interface LoadPanelData {
@@ -10,7 +10,7 @@ interface LoadPanelData {
   duration?: number;
 }
 
-export default function UILoadPanel({ data, visible, close }: PanelProps) {
+export default function UILoadPanel({ data, visible, onClose }: PanelProps) {
   const panelData = (data ?? {}) as LoadPanelData;
   const [progress, setProgress] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
@@ -20,9 +20,10 @@ export default function UILoadPanel({ data, visible, close }: PanelProps) {
   const duration = panelData.duration ?? 3000;
   const version = panelData.version ?? 'v1.0.0';
 
-  usePanelLifecycle(
-    {
-      onShow: () => {
+  usePanel({
+    visible,
+    data,
+    onShow: () => {
         setProgress(0);
         setIsComplete(false);
         progressRef.current = 0;
@@ -47,7 +48,7 @@ export default function UILoadPanel({ data, visible, close }: PanelProps) {
               });
             }
 
-            setTimeout(() => close(), 500);
+            setTimeout(() => onClose(), 500);
           }
         };
 
@@ -63,10 +64,7 @@ export default function UILoadPanel({ data, visible, close }: PanelProps) {
           cancelAnimationFrame(rafRef.current);
         }
       },
-    },
-    data,
-    visible
-  );
+  });
 
   return (
     <div className="panel-root" style={{ background: '#0f0f23' }}>
