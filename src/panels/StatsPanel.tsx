@@ -3,10 +3,10 @@ import { PanelProps } from '../types/panel';
 import { Slider } from '../components';
 
 export const StatsPanel: React.FC<PanelProps> = ({ visible, zIndex }) => {
-  if (!visible) return null;
-
   const [cpu, setCpu] = React.useState(45);
   const [memory, setMemory] = React.useState(62);
+
+  if (!visible) return null;
 
   return (
     <div className="panel" style={{ zIndex }}>

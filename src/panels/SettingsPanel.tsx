@@ -3,10 +3,10 @@ import { PanelProps } from '../types/panel';
 import { Toggle } from '../components';
 
 export const SettingsPanel: React.FC<PanelProps> = ({ visible, zIndex }) => {
-  if (!visible) return null;
-
   const [darkMode, setDarkMode] = React.useState(true);
   const [notifications, setNotifications] = React.useState(true);
+
+  if (!visible) return null;
 
   return (
     <div className="panel" style={{ zIndex }}>
