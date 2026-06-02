@@ -43,6 +43,14 @@ class PanelManager {
     return this.visiblePanels.has(id);
   }
 
+  getAllPanels(): PanelConfig[] {
+    return Array.from(this.panels.values());
+  }
+
+  getPanelConfig(id: string): PanelConfig | undefined {
+    return this.panels.get(id);
+  }
+
   getVisiblePanels(): PanelProps[] {
     return Array.from(this.visiblePanels).map((id, index) => ({
       id,
