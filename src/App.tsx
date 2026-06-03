@@ -1,156 +1,239 @@
 import { useMemo } from 'react';
-import { PanelManagerProvider, PanelRegistry, usePanelManager, usePanel, UILevel } from './index';
-import type { PanelProps, IUIData } from './index';
+import { PanelManagerProvider, PanelRegistry, usePanelManager, UILevel } from './index';
 
-// ============================================================================
-// 示例面板组件
-// ============================================================================
+// 面板组件
+import UILoadPanel from './panels/UILoadPanel';
+import UITipPanel from './panels/UITipPanel';
+import UINoviceTutorialPanel from './panels/UINoviceTutorialPanel';
+import UIRecordPanel from './panels/UIRecordPanel';
+import LoadScenePanel from './panels/LoadScenePanel';
+import UISelectPanel from './panels/UISelectPanel';
+import UIFunctionPanel from './panels/UIFunctionPanel';
+import UISubtitlePanel from './panels/UISubtitlePanel';
+import UIProtectiveClothingPanel from './panels/UIProtectiveClothingPanel';
+import TaskMenu from './panels/TaskMenu';
+import UIHistoryTakingPanel from './panels/UIHistoryTakingPanel';
+import UIDisinfectPanel from './panels/UIDisinfectPanel';
+import UIComprehensivePerformanceRecordPanel from './panels/UIComprehensivePerformanceRecordPanel';
+import UITopOptTip from './panels/UITopOptTip';
 
-interface TipPanelData extends IUIData {
-  title?: string;
-  message: string;
-}
-
-function UITipPanel({ data, visible, onClose }: PanelProps) {
-  const panelData = data as TipPanelData;
-
-  usePanel({
-    visible,
-    data: panelData,
-    onInit() {
-      console.log('[UITipPanel] 初始化');
-    },
-    onShow(d) {
-      console.log('[UITipPanel] 显示，消息:', (d as TipPanelData).message);
-    },
-    onHide() {
-      console.log('[UITipPanel] 隐藏');
-    },
-    onDestroy() {
-      console.log('[UITipPanel] 销毁');
-    },
-  });
-
-  if (!visible) return null;
-
-  return (
-    <div
-      style={{
-        background: 'rgba(0, 0, 0, 0.5)',
-        padding: '24px',
-        borderRadius: '12px',
-        minWidth: '300px',
-        textAlign: 'center',
-        color: '#fff',
-      }}
-    >
-      {panelData.title && <h3>{panelData.title}</h3>}
-      <p>{panelData.message}</p>
-      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
-        <button onClick={onClose}>确定</button>
-      </div>
-    </div>
-  );
-}
-
-function UIFunctionPanel({ data, visible, onClose }: PanelProps) {
-  usePanel({
-    visible,
-    data,
-    onInit() {
-      console.log('[UIFunctionPanel] 初始化（AlwayTop）');
-    },
-    onShow() {
-      console.log('[UIFunctionPanel] 显示');
-    },
-    onDestroy() {
-      console.log('[UIFunctionPanel] 销毁');
-    },
-  });
-
-  if (!visible) return null;
-
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        top: '10px',
-        right: '10px',
-        background: '#333',
-        padding: '12px',
-        borderRadius: '8px',
-        color: '#fff',
-        display: 'flex',
-        gap: '8px',
-      }}
-    >
-      <button onClick={() => console.log('暂停')}>⏸ 暂停</button>
-      <button onClick={() => console.log('全屏')}>⛶ 全屏</button>
-      <button onClick={onClose}>✕ 关闭</button>
-    </div>
-  );
-}
-
-// ============================================================================
-// 注册表配置
-// ============================================================================
-
-function createRegistry(): PanelRegistry {
-  const registry = new PanelRegistry();
-
-  registry.register({
+// 面板配置列表
+const PANEL_CONFIGS = [
+  {
+    name: 'UILoadPanel',
+    component: UILoadPanel,
+    level: UILevel.Common,
+    singleton: true,
+    defaultAnimation: { type: 'fade' as const, duration: 300 },
+    demoData: { version: 'v1.0.0', duration: 2000, autoOpenPanels: ['UISelectPanel'] },
+  },
+  {
     name: 'UITipPanel',
     component: UITipPanel,
     level: UILevel.Common,
     singleton: true,
-    defaultAnimation: {
-      type: 'fade',
-      duration: 300,
-    },
-  });
-
-  registry.register({
+    defaultAnimation: { type: 'fade' as const, duration: 300 },
+    demoData: { title: '提示', content: 'Hello PanelManager!', mode: 'Custom' },
+  },
+  {
+    name: 'UINoviceTutorialPanel',
+    component: UINoviceTutorialPanel,
+    level: UILevel.Common,
+    singleton: true,
+    defaultAnimation: { type: 'slide' as const, duration: 400, direction: 'bottom' as const },
+    demoData: { mode: 'practice' },
+  },
+  {
+    name: 'UIRecordPanel',
+    component: UIRecordPanel,
+    level: UILevel.Common,
+    singleton: true,
+    defaultAnimation: { type: 'fade' as const, duration: 300 },
+    demoData: {},
+  },
+  {
+    name: 'LoadScenePanel',
+    component: LoadScenePanel,
+    level: UILevel.Common,
+    singleton: true,
+    defaultAnimation: { type: 'fade' as const, duration: 300 },
+    demoData: { sceneName: 'MainScene' },
+  },
+  {
+    name: 'UISelectPanel',
+    component: UISelectPanel,
+    level: UILevel.Common,
+    singleton: true,
+    defaultAnimation: { type: 'slide' as const, duration: 400, direction: 'left' as const },
+    demoData: {},
+  },
+  {
     name: 'UIFunctionPanel',
     component: UIFunctionPanel,
     level: UILevel.AlwayTop,
     singleton: true,
-    defaultAnimation: {
-      type: 'slide',
-      duration: 300,
-      direction: 'right',
+    defaultAnimation: { type: 'slide' as const, duration: 300, direction: 'right' as const },
+    demoData: {},
+  },
+  {
+    name: 'UISubtitlePanel',
+    component: UISubtitlePanel,
+    level: UILevel.Common,
+    singleton: true,
+    defaultAnimation: { type: 'slide' as const, duration: 400, direction: 'bottom' as const },
+    demoData: {
+      dialogues: [
+        { text: '欢迎来到护理虚拟仿真系统。', speaker: '系统', audioUrl: null },
+        { text: '请选择你要进行的案例练习。', speaker: '系统', audioUrl: null },
+      ],
+      typingSpeed: 50,
     },
-  });
+  },
+  {
+    name: 'UIProtectiveClothingPanel',
+    component: UIProtectiveClothingPanel,
+    level: UILevel.Common,
+    singleton: true,
+    defaultAnimation: { type: 'fade' as const, duration: 300 },
+    demoData: {},
+  },
+  {
+    name: 'TaskMenu',
+    component: TaskMenu,
+    level: UILevel.Common,
+    singleton: true,
+    defaultAnimation: { type: 'slide' as const, duration: 400, direction: 'right' as const },
+    demoData: { mode: 'dot' },
+  },
+  {
+    name: 'UIHistoryTakingPanel',
+    component: UIHistoryTakingPanel,
+    level: UILevel.Common,
+    singleton: true,
+    defaultAnimation: { type: 'fade' as const, duration: 300 },
+    demoData: {},
+  },
+  {
+    name: 'UIDisinfectPanel',
+    component: UIDisinfectPanel,
+    level: UILevel.Common,
+    singleton: true,
+    defaultAnimation: { type: 'fade' as const, duration: 300 },
+    demoData: {},
+  },
+  {
+    name: 'UIComprehensivePerformanceRecordPanel',
+    component: UIComprehensivePerformanceRecordPanel,
+    level: UILevel.Common,
+    singleton: true,
+    defaultAnimation: { type: 'fade' as const, duration: 400 },
+    demoData: {},
+  },
+  {
+    name: 'UITopOptTip',
+    component: UITopOptTip,
+    level: UILevel.AlwayTop,
+    singleton: true,
+    defaultAnimation: { type: 'fade' as const, duration: 200 },
+    demoData: {},
+  },
+];
 
+function createRegistry(): PanelRegistry {
+  const registry = new PanelRegistry();
+  for (const config of PANEL_CONFIGS) {
+    registry.register({
+      name: config.name,
+      component: config.component,
+      level: config.level,
+      singleton: config.singleton,
+      defaultAnimation: config.defaultAnimation,
+    });
+  }
   return registry;
 }
-
-// ============================================================================
-// 应用入口
-// ============================================================================
 
 function AppContent() {
   const { openPanel, closePanel, closeAll, isPanelOpen } = usePanelManager();
 
   return (
-    <div className="app" style={{ padding: '20px' }}>
+    <div className="app" style={{ padding: '20px', minHeight: '100vh' }}>
       <h1>Web Panel - PanelManager Demo</h1>
-      <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-        <button onClick={() => openPanel('UITipPanel', { data: { title: '提示', message: 'Hello PanelManager!' } })}>
-          打开提示面板 (Common)
-        </button>
-        <button onClick={() => openPanel('UIFunctionPanel', { data: {} })}>
-          打开功能面板 (AlwaysTop)
-        </button>
-        <button onClick={() => closePanel('UITipPanel')}>
-          关闭提示面板
-        </button>
-        <button onClick={closeAll}>
+
+      {/* 面板控制区 */}
+      <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '20px' }}>
+        {PANEL_CONFIGS.map((config) => (
+          <button
+            key={config.name}
+            onClick={() => {
+              if (isPanelOpen(config.name)) {
+                closePanel(config.name);
+              } else {
+                openPanel(config.name, { data: config.demoData });
+              }
+            }}
+            style={{
+              padding: '8px 16px',
+              borderRadius: '8px',
+              border: '1px solid',
+              borderColor: isPanelOpen(config.name) ? '#4caf50' : '#555',
+              backgroundColor: isPanelOpen(config.name) ? '#4caf5022' : '#1a1a1a',
+              color: isPanelOpen(config.name) ? '#4caf50' : '#fff',
+              cursor: 'pointer',
+              fontSize: '13px',
+              transition: 'all 0.2s',
+            }}
+          >
+            {isPanelOpen(config.name) ? '✕ ' : '▶ '}
+            {config.name}
+          </button>
+        ))}
+      </div>
+
+      {/* 全局控制 */}
+      <div style={{ display: 'flex', gap: '12px', marginBottom: '20px' }}>
+        <button
+          onClick={closeAll}
+          style={{
+            padding: '8px 16px',
+            borderRadius: '8px',
+            border: '1px solid #d9534f',
+            backgroundColor: '#d9534f22',
+            color: '#d9534f',
+            cursor: 'pointer',
+            fontSize: '13px',
+          }}
+        >
           关闭所有面板
         </button>
       </div>
-      <div style={{ marginTop: '20px' }}>
-        <p>UITipPanel: {isPanelOpen('UITipPanel') ? '✅ 已打开' : '❌ 未打开'}</p>
-        <p>UIFunctionPanel: {isPanelOpen('UIFunctionPanel') ? '✅ 已打开' : '❌ 未打开'}</p>
+
+      {/* 状态显示 */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+          gap: '8px',
+          fontSize: '13px',
+          color: '#aaa',
+        }}
+      >
+        {PANEL_CONFIGS.map((config) => (
+          <div
+            key={config.name}
+            style={{
+              padding: '6px 10px',
+              borderRadius: '4px',
+              backgroundColor: isPanelOpen(config.name) ? '#4caf5011' : 'transparent',
+              border: '1px solid',
+              borderColor: isPanelOpen(config.name) ? '#4caf5044' : '#333',
+              color: isPanelOpen(config.name) ? '#4caf50' : '#666',
+              transition: 'all 0.2s',
+            }}
+          >
+            {config.name}: {isPanelOpen(config.name) ? '已打开' : '未打开'}
+          </div>
+        ))}
       </div>
     </div>
   );
